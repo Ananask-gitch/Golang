@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create advertisement</title>
+</head>
+
+<body>
+    <h3>New advertisement</h3>
+    <form action="http://localhost:8080/advertisements" method="post">
+        <label>Name</label><br>
+        <input type="text" name="name" placeholder="Введите название объявления" /><br><br>
+        <label>Comment</label><br>
+        <input type="text" name="comment" placeholder="Текст" /><br><br>
+        <label>Photo</label><br>
+        <input type="text" name="photo" placeholder="ссылка на фото" /><br><br>
+        <label>Price</label><br>
+        <input type="number" name="price" placeholder="цена" /><br><br>
+        <input type="submit" value="Отправить" />
+    </form>
+</body>
+
+</html>
