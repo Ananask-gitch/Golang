@@ -1,21 +1,37 @@
 package handlers
 
 import (
-	"Golang/pkg/models"
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 )
 
 func (h handler) HandlerGetAll(w http.ResponseWriter, r *http.Request) {
-	advertisements := []models.Advertisement{}
 
-	result := h.DB.Find(&advertisements)
+	// Открываем CORS для всех источников
+	//w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	//w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	var results []struct {
+		Id        uint
+		Name      string
+		Comment   string
+		Price     uint
+		PhotoMain string
+	}
+
+	result := h.DB.Table("advertisements").
+		Select("advertisements.id ,advertisements.name, advertisements.comment,advertisements.price , photos.photo_main").
+		Joins("left join photos on photos.advertisement_id = advertisements.id").
+		Scan(&results)
 	if result.Error != nil {
-		fmt.Println(result.Error)
+		log.Println(result.Error)
+		w.Header().Add("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadGateway)
 	}
 
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(advertisements)
+	json.NewEncoder(w).Encode(results)
 }

@@ -2,6 +2,7 @@ package storage
 
 import (
 	"Golang/pkg/models"
+	"fmt"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -10,13 +11,14 @@ import (
 
 func Init() *gorm.DB {
 
-	dsn := "user=postgres password=admin dbname=dbtest port=5432 sslmode=disable "
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable ",
+		host, port, user, password, dbname)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Ошибка подключения базы данных dbtest: %v", err)
 	}
 
-	err = db.AutoMigrate(&models.Advertisement{})
+	err = db.AutoMigrate(&models.Advertisement{}, &models.Photo{})
 	if err != nil {
 		log.Fatalf("Ошибка миграции: %v", err)
 	}
@@ -25,3 +27,11 @@ func Init() *gorm.DB {
 
 	return db
 }
+
+const (
+	host     = "localhost"
+	user     = "postgres"
+	password = "admin"
+	dbname   = "dbtest"
+	port     = 5432
+)

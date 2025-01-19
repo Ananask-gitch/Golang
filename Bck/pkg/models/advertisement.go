@@ -1,11 +1,16 @@
 package models
 
-import "gorm.io/gorm"
-
 type Advertisement struct {
-	gorm.Model
-	Name    string `gorm: "size:200; not null"`
-	Comment string `gorm: "size:1000"`
-	Photo   string
-	Price   uint
+	ID      uint    `gorm:"primaryKey"`
+	Name    string  `gorm:"type:varchar(200); not null"`
+	Comment string  `gorm:"varchar(1000);not null"`
+	Photos  []Photo `gorm:"foreignKey:"AdvertisementID; constraint:OnDelete:CASCADE;not null"`
+	Price   uint    `gorm"type:uint;not null"`
+}
+
+type Photo struct {
+	AdvertisementID uint   `gorm:"primaryKey"`
+	PhotoMain       string `gorm:"not null"`
+	PhotoSecond     string `gorm:""`
+	PhotoSecond2    string `gorm:""`
 }
