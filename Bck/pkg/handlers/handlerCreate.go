@@ -16,8 +16,8 @@ func (h handler) HandlerCreate(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	comment := r.FormValue("comment")
 	photo := r.FormValue("photo")
-	photosecond := r.FormValue("photosecond")
-	photosecond2 := r.FormValue("photosecond2")
+	// photosecond := r.FormValue("photosecond")
+	// photosecond2 := r.FormValue("photosecond2")
 	price := r.FormValue("price")
 	pricei, err := strconv.Atoi(price)
 	if err != nil {
@@ -32,10 +32,7 @@ func (h handler) HandlerCreate(w http.ResponseWriter, r *http.Request) {
 		advertisement := models.Advertisement{
 			Name:    name,
 			Comment: comment,
-			Photos: []models.Photo{{
-				PhotoMain:    photo,
-				PhotoSecond:  photosecond,
-				PhotoSecond2: photosecond2}},
+			//Photos: models.Photo{{}},
 			Price: uint(pricei)}
 
 		result := h.DB.Create(&advertisement)
