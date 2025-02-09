@@ -1,25 +1,22 @@
 package handlers
 
 import (
+	"Golang/pkg/models"
+	"encoding/json"
 	"log"
 	"net/http"
 )
 
-func (h handler) HandlerGetOne(w http.ResponseWriter, r *http.Request) {
+func (h handler) HandlerAdd(w http.ResponseWriter, r *http.Request) {
 
-	err := r.ParseForm()
+	advertisement := models.Advertisement{}
+	err := json.NewDecoder(r.Body).Decode(&advertisement)
 	if err != nil {
 		log.Println(err)
 	}
 
-	var results []struct {
-		Name string
-	}
-
-	result := h.DB.Table("advertisements").
-		Joins("left join photos on photos.advertisement_id = 1").
-		Where("id = ?", 1).
-		Scan(&results)
+	log.Println(advertisement)
+	result := h.DB.Preload("Photos").Create(&advertisement)
 	if result.Error != nil {
 		log.Println(result.Error)
 		w.Header().Add("Content-Type", "application/json")

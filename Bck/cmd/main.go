@@ -16,8 +16,8 @@ func main() {
 	go mux.HandleFunc("GET /advertisements", h.HandlerGetAll)
 	go mux.HandleFunc("GET /advertisements/{id}", h.HandlerGet)
 	go mux.HandleFunc("DELETE /advertisements/{id}", h.HandlerDelete)
-	go mux.HandleFunc("POST /advertisements", h.HandlerCreate)
-	go mux.HandleFunc("GET /advertisement", h.HandlerGetOne)
+	go mux.HandleFunc("POST /advertisement", h.HandlerCreate)
+	go mux.HandleFunc("POST /advertisements", h.HandlerAdd)
 
 	log.Println("Listening for requests")
 	http.ListenAndServe(":8080", mux)

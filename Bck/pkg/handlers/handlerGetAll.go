@@ -14,7 +14,7 @@ func (h handler) HandlerGetAll(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	var results []struct {
-		Id        uint
+		ID        uint
 		Name      string
 		Comment   string
 		Price     uint

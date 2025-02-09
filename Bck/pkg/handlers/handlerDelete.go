@@ -11,7 +11,9 @@ func (h handler) HandlerDelete(w http.ResponseWriter, r *http.Request) {
 
 	id := r.PathValue("id")
 	advertisement := models.Advertisement{}
-	result := h.DB.First(&advertisement, "id = ?", id).Delete(&advertisement)
+	photos := models.Photo{}
+	h.DB.Delete(&photos, "advertisement_id=?", id)
+	result := h.DB.Preload("Photos").Delete(&advertisement, "id=?", id)
 	if result.Error != nil {
 		log.Println(result.Error)
 		w.Header().Add("Content-Type", "application/json")
