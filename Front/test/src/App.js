@@ -6,13 +6,25 @@ import {
     Paging,
     Pager,
     Editing,
-    Popup
+    Popup,
+    MasterDetail
 } from 'devextreme-react/data-grid';
 import DataSource from 'devextreme/data/data_source';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 
 
 const url = ""
+
+
+  const renderDetail = (props) => {
+    const { PhotoSecond, PhotoSecond2 } = props.data.Photos;
+    return (
+      <div className="employee-info">
+        <p>Доп фото: {PhotoSecond}</p>
+        <p>Доп фото: {PhotoSecond2}</p>
+      </div>
+    );
+  };
  
 function App() {
     const  dataSource = useMemo (() => {
@@ -41,6 +53,7 @@ console.log(dataSource);
                 dataSource={dataSource}
                 allowColumnReordering={true}
                 onRowUpdating = {(options) => options.newData = {...options.oldData, ...options.newData}}>
+
                 <Editing
                     mode="popup"
                     allowUpdating={false}
@@ -52,8 +65,15 @@ console.log(dataSource);
                 visible={true}/>
                 <Column dataField="Name" caption={"Имя"}></Column>
                 <Column dataField="Comment" caption={"Комментарий"}></Column>
-                <Column dataField="PhotoMain" caption={"Фотография"}></Column>
+                <Column dataField="Photos.PhotoMain" caption={"Фотография"}></Column>
                 <Column dataField="Price" caption={"Цена"}></Column>
+                <Column dataField="Photos.PhotoSecond" caption={"допфото"} visible={false}></Column>
+                <Column dataField="Photos.PhotoSecond2" caption={"допфото"} visible={false}></Column>
+                
+                <MasterDetail
+                    enabled={true}
+                    render={renderDetail}
+                />
             </DataGrid>
         </div>
     );

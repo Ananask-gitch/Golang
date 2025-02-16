@@ -8,29 +8,15 @@ import (
 )
 
 func (h handler) HandlerAdd(w http.ResponseWriter, r *http.Request) {
-	var res struct {
-		Name      string
-		Comment   string
-		PhotoMain []models.Photo
-		Price     uint
-	}
+
 	advertisement := models.Advertisement{}
 
-	err := json.NewDecoder(r.Body).Decode(&res)
+	err := json.NewDecoder(r.Body).Decode(&advertisement)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
-	Name := res.Name
-	Comment := res.Comment
-	Price := res.Price
-	Photo := res.PhotoMain
-
-	advertisement.Name = Name
-	advertisement.Comment = Comment
-	advertisement.Photos = Photo
-	advertisement.Price = Price
 
 	result := h.DB.Preload("Photos").Create(&advertisement)
 	if result.Error != nil {
